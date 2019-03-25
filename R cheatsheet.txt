@@ -1,4 +1,17 @@
 ### Helpful R cheatsheet ###
 
+
+# load in data #
+	data <- readRDS(file = "modified_data/data.rds")
+
+# save data #
+	saveRDS(data, file = "modified_data/data.rds")
+	
 # list the types of all columns in a dataframe
-sapply(df, typeof)
+	sapply(df, typeof)
+
+# merge dataframes
+	full_data<-inner_join(df1, df2, by=c("foo))
+
+# anti join
+	anti_data <- anti_join(df1, df2, by=c("foo"))
