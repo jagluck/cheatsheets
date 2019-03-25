@@ -1,0 +1,4 @@
+### Helpful R cheatsheet ###
+
+# list the types of all columns in a dataframe
+sapply(df, typeof)
