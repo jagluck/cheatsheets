@@ -1,0 +1,65 @@
+### Helpful Python cheatsheet ###
+
+# list columns in df
+print(list(df))
+
+# subset groups based on condition in a column/columns
+df.loc[df['column_name'] == some_value]
+df.loc[df['column_name'].isin(some_values)]
+df.loc[(df['column_name'] >= A) & (df['column_name'] <= B)]
+
+####### Helper funtions to process an array of strings from a csv #######
+
+# Helper funtions to process an array of strings from a csv
+
+def parts(a):
+    """Split a python-tokenizable expression on comma operators"""
+    compos = [-1] # compos stores the positions of the relevant commas in the argument string
+    compos.extend(t[2][1] for t in generate_tokens(StringIO(a).readline) if t[1] == ',')
+    compos.append(len(a))
+    return [ a[compos[i]+1:compos[i+1]] for i in xrange(len(compos)-1)]
+
+#coverts to list of strings
+def convertType(toConv, makeUpper):
+    
+    tcs = []
+    for tc in toConv:
+        tc = tc.replace('[','')
+        tc = tc.replace(']','')
+        tc = tc.replace('{','')
+        tc = tc.replace('}','')
+        tc = tc.replace(' \'','')
+        tc = tc.replace('\'','')
+        tc = tc.replace('@','')
+        tc = tc.replace('-','')
+        tc = tc.replace('#','')
+        chain = parts(tc)
+        
+        chain2 = []
+        for c in chain:
+            chain2.append(c) 
+        
+        #make uppercase if specified
+        chain3 = []
+        if makeUpper:
+            for c in chain2:
+                chain3.append(c.upper())
+            tcs.append(chain3)
+        else:
+            tcs.append(chain2)
+        
+    return np.array(tcs)
+
+def fixDF(df):
+    # remove empty columns
+    df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+
+    # fix all string fields 
+    for column in df:
+        if (type(df[column][0]) == str):
+            df[column] = convertType(df[column], False)
+    
+    return df 
+
+
+##############################################################
